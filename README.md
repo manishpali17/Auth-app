@@ -1,5 +1,5 @@
 ## Auth App
-A simple authentication service
+A simple authentication service using next auth
 
 Key Features:
 - 🔐 Next-auth v5 (Auth.js)

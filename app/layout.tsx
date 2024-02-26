@@ -10,9 +10,11 @@ export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
 export const metadata: Metadata = {
   title: "Auth app",
-  description: "A simple authentication service",
+  description: "A simple authentication service using next auth",
+  metadataBase: new URL("https://auth-app-manishpali.vercel.app"),
 };
 
 export default async function RootLayout({
