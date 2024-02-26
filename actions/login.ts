@@ -47,24 +47,25 @@ export const login = async (
     return { success: "Confirmation email sent!" };
   }
 
-    if (existingUser.isTwoFactorEnabled && existingUser.email) {
-      if (code) {
-        const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
+  if (existingUser.isTwoFactorEnabled && existingUser.email) {
+    if (code) {
+      const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
 
-        if (!twoFactorToken) {
-          return { error: "Invalid code!" };
-        }
+      if (!twoFactorToken) {
+        return { error: "Invalid code!" };
+      }
 
-        if (twoFactorToken.token !== code) {
-          return { error: "Invalid code!" };
-        }
+      if (twoFactorToken.token !== code) {
+        return { error: "Invalid code!" };
+      }
 
-        const hasExpired = new Date(twoFactorToken.expires) < new Date();
+      const hasExpired = new Date(twoFactorToken.expires) < new Date();
 
-        if (hasExpired) {
-          return { error: "Code expired!" };
-        }
+      if (hasExpired) {
+        return { error: "Code expired!" };
+      }
 
+      try {
         await db.twoFactorToken.delete({
           where: { id: twoFactorToken.id },
         });
@@ -84,13 +85,16 @@ export const login = async (
             userId: existingUser.id,
           },
         });
-      } else {
-        const twoFactorToken = await generateTwoFactorToken(existingUser.email);
-        await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
-
-        return { twoFactor: true };
+      } catch (error) {
+        return { error: "Something went wrong!" };
       }
+    } else {
+      const twoFactorToken = await generateTwoFactorToken(existingUser.email);
+      await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
+
+      return { twoFactor: true };
     }
+  }
 
   try {
     await signIn("credentials", {

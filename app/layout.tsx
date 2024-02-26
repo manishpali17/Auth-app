@@ -12,7 +12,7 @@ export const fontSans = FontSans({
 });
 export const metadata: Metadata = {
   title: "Auth app",
-  description: "A auth app for next",
+  description: "A simple authentication service",
 };
 
 export default async function RootLayout({

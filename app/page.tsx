@@ -19,11 +19,11 @@ export default function Home() {
             font.className
           )}
         >
-          🔐 Auth
+          🔐 Auth App
         </h1>
         <p className="text-white text-lg">A simple authentication service</p>
         <div>
-          <LoginButton asChild mode="redirect">
+          <LoginButton asChild>
             <Button variant="secondary" size="lg">
               Sign in
             </Button>
